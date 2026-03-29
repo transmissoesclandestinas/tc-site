@@ -1,95 +1,46 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
 
-export default function Home() {
+import { useEffect, useState } from 'react'
+
+interface Evento {
+  id: string
+  evento: string
+  dia: string
+  hora: string
+  lineup: string
+}
+
+export default function AgendaPage() {
+  const [eventos, setEventos] = useState<Evento[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/eventos')
+      .then(res => res.json())
+      .then(data => { setEventos(data); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [])
+
+  if (loading) return <main style={{ background: '#C8102E', minHeight: '100vh' }} />
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main style={{ background: '#C8102E', minHeight: '100vh', padding: eventos.length > 0 ? '60px 40px' : '0' }}>
+      {eventos.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', maxWidth: '400px' }}>
+          {eventos.map((ev) => (
+            <div key={ev.id} style={{ display: 'inline-flex', gap: '27.5px', alignItems: 'flex-start' }}>
+              <div style={{ width: '36px', display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-end', gap: '9.5px' }}>
+                <div style={{ color: 'white', fontSize: '32px', fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif', fontWeight: '700', lineHeight: 1 }}>{ev.dia}</div>
+                <div style={{ color: 'white', fontSize: '14px', fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif', fontWeight: '700', textAlign: 'right' }}>{ev.hora}</div>
+              </div>
+              <div style={{ flex: '1 1 0', display: 'inline-flex', flexDirection: 'column', gap: '9.5px' }}>
+                <div style={{ color: 'white', fontSize: '32px', fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif', fontWeight: '700', lineHeight: 1 }}>{ev.evento}</div>
+                <div style={{ color: 'white', fontSize: '14px', fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif', fontWeight: '700' }}>{ev.lineup}</div>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      )}
     </main>
-  );
+  )
 }
