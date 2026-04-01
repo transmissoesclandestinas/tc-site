@@ -12,15 +12,22 @@ export async function GET() {
     const agora = new Date();
 
     const eventos = rows
+      .filter((row: any) => {
+        const lineup = row.c[0]?.v ?? "";
+        return lineup !== "" && lineup !== "lineup";
+      })
       .map((row: any) => {
         const lineup = row.c[0]?.v ?? "";
-        const diaRaw = row.c[1]?.v ?? "";
-        const [dia, mes, ano] = String(diaRaw).split("/");
+        const diaRaw = String(row.c[1]?.v ?? "");
+        const partes = diaRaw.split("/");
+        const dia = partes[0] ?? "01";
+        const mes = partes[1] ?? "01";
+        const ano = partes[2] ?? String(new Date().getFullYear());
         const dataEvento = new Date(Number(ano), Number(mes) - 1, Number(dia));
         dataEvento.setHours(24, 0, 0, 0);
         return { lineup, dia: `${dia}/${mes}`, dataEvento };
       })
-      .filter((ev: any) => ev.dataEvento > agora && ev.lineup !== "")
+      .filter((ev: any) => ev.dataEvento > agora)
       .map(({ lineup, dia }: any) => ({ lineup, dia }));
 
     return NextResponse.json(eventos);
