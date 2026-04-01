@@ -9,18 +9,10 @@ interface Evento {
 
 const CORES = ["#008FFF", "#41FB73", "#D7F91B", "#ED8CEA"];
 
-function getTextColor(cor: string) {
-  return cor === "#008FFF" ? "white" : "#111";
-}
-
-function getBorderColor(cor: string) {
-  return cor === "#008FFF" ? "white" : "#111";
-}
-
 export default function AgendaPage() {
   const [eventos, setEventos] = useState<Evento[]>([]);
   const [loading, setLoading] = useState(true);
-  const [cor, setCor] = useState("#bababa");
+  const [cor, setCor] = useState("#41FB73");
 
   useEffect(() => {
     const corAleatoria = CORES[Math.floor(Math.random() * CORES.length)];
@@ -35,16 +27,15 @@ export default function AgendaPage() {
       .catch(() => setLoading(false));
   }, []);
 
-  const textColor = getTextColor(cor);
-  const borderColor = getBorderColor(cor);
-  const border = `1px solid ${borderColor}`;
+  const border = `1px solid ${cor}`;
 
-  if (loading) return <main style={{ background: cor, minHeight: "100vh" }} />;
+  if (loading)
+    return <main style={{ background: "#3B403C", minHeight: "100vh" }} />;
 
   return (
     <main
       style={{
-        background: cor,
+        background: "#3B403C",
         minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
@@ -78,7 +69,7 @@ export default function AgendaPage() {
                     fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
                     fontSize: "8px",
                     fontWeight: 500,
-                    color: textColor,
+                    color: cor,
                   }}
                 >
                   {label}
@@ -95,6 +86,7 @@ export default function AgendaPage() {
                 key={i}
                 style={{ display: "flex", alignItems: "flex-start" }}
               >
+                {/* data */}
                 <div
                   style={{
                     paddingRight: "8px",
@@ -112,7 +104,7 @@ export default function AgendaPage() {
                         "Helvetica Neue, Helvetica, Arial, sans-serif",
                       fontSize: "12px",
                       fontWeight: 500,
-                      color: textColor,
+                      color: cor,
                       lineHeight: 1.1,
                     }}
                   >
@@ -124,7 +116,7 @@ export default function AgendaPage() {
                         "Helvetica Neue, Helvetica, Arial, sans-serif",
                       fontSize: "12px",
                       fontWeight: 500,
-                      color: textColor,
+                      color: cor,
                       lineHeight: 1.1,
                     }}
                   >
@@ -136,13 +128,15 @@ export default function AgendaPage() {
                         "Helvetica Neue, Helvetica, Arial, sans-serif",
                       fontSize: "12px",
                       fontWeight: 500,
-                      color: textColor,
+                      color: cor,
                       lineHeight: 1.1,
                     }}
                   >
                     {mes}
                   </div>
                 </div>
+
+                {/* lineup */}
                 <div
                   style={{
                     flex: 1,
@@ -157,7 +151,7 @@ export default function AgendaPage() {
                         "Helvetica Neue, Helvetica, Arial, sans-serif",
                       fontSize: "36px",
                       fontWeight: 500,
-                      color: textColor,
+                      color: cor,
                       lineHeight: 0.95,
                       wordBreak: "break-word",
                     }}
