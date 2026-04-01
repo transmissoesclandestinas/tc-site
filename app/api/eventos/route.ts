@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const SHEET_ID = "1NwXSG5vVFXudGvZpTTWnO1by-GGjf0W-DocUjniRVQ4";
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Página1`;
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=P%C3%A1gina1`;
 
 export async function GET() {
   try {
